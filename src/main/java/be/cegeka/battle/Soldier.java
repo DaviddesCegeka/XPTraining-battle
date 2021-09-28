@@ -7,6 +7,7 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 public class Soldier {
 
     private final String name;
+    private Weapon weapon = new BareFist();
 
     public Soldier(String name) {
         Validate.isTrue(isNotBlank(name));
@@ -16,5 +17,13 @@ public class Soldier {
 
     String getName() {
         return this.name;
+    }
+
+    public Weapon getWeapon() {
+        return this.weapon;
+    }
+
+    public void equipWeapon(Weapon weapon) {
+        this.weapon = weapon;
     }
 }

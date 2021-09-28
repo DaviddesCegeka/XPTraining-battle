@@ -5,12 +5,13 @@ import org.junit.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class SoldierTest {
+    final String SOLDIER_NAME = "name";
 
     @Test
     public void construction_ASoldierMustHaveAName() {
-        Soldier soldier = new Soldier("name");
+        Soldier soldier = new Soldier(SOLDIER_NAME);
 
-        assertThat(soldier.getName()).isEqualTo("name");
+        assertThat(soldier.getName()).isEqualTo(SOLDIER_NAME);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -26,6 +27,21 @@ public class SoldierTest {
     @Test(expected = IllegalArgumentException.class)
     public void construction_ASoldierMustHaveAName_CannotBeBlank() {
         new Soldier("   ");
+    }
+
+    @Test
+    public void construction_ASoldierHasADefaultWeaponBareFist() {
+        Soldier soldier = new Soldier(SOLDIER_NAME);
+
+        assertThat(soldier.getWeapon()).isInstanceOf(BareFist.class);
+    }
+
+    @Test
+    public void givenSoldier_whenSetSwordAsWeapon_thenSoldierHasSword() {
+        Soldier soldier = new Soldier(SOLDIER_NAME);
+        soldier.equipWeapon(new Sword());
+
+        assertThat(soldier.getWeapon()).isInstanceOf(Sword.class);
     }
 
 }
