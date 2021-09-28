@@ -24,6 +24,21 @@ public class Soldier {
     }
 
     public void equipWeapon(Weapon weapon) {
+
+        if (weapon == null) {
+            throw(new IllegalArgumentException("Weapon cannot be null"));
+        }
+
         this.weapon = weapon;
+    }
+
+    public Soldier attack(Soldier defender) {
+
+        if (this.getWeapon().getDamage() < defender.getWeapon().getDamage()) {
+
+            return defender;
+        }
+
+        return this;
     }
 }
