@@ -13,9 +13,11 @@ public class War {
 
     public Army getWinningArmy() {
         if (attackingArmy.isEmpty()) {
+            defendingArmy.reportWonWar();
             return defendingArmy;
         }
         if (defendingArmy.isEmpty()) {
+            attackingArmy.reportWonWar();
             return attackingArmy;
         }
         letFrontmenFight(attackingArmy.getFrontMan().orElseThrow(), defendingArmy.getFrontMan().orElseThrow());

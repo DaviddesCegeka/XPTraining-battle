@@ -1,24 +1,34 @@
 package be.cegeka.battle;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import static be.cegeka.battle.TestConstants.NAME_JOHN_DOE;
 import static be.cegeka.battle.TestConstants.NAME_RON_DOE;
 import static be.cegeka.battle.Weapon.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 class WarTest {
 
+    IHeadquarters attackingHQ = Mockito.mock(IHeadquarters.class);
+    IHeadquarters defendingHQ = Mockito.mock(IHeadquarters.class);
+
     @Test
     void givenAtackerIsStronger_getWinningArmy_expectAttackerWins() {
-        Army attackingArmy = new Army();
+        when(attackingHQ.reportEnlistment(NAME_JOHN_DOE)).thenReturn(1);
+        when(attackingHQ.reportEnlistment(NAME_RON_DOE)).thenReturn(2);
+        Army attackingArmy = new Army(attackingHQ);
         Soldier attackingSoldier1 = new Soldier(NAME_JOHN_DOE, SWORD);
         Soldier attackingSoldier2 = new Soldier(NAME_RON_DOE, AXE);
         attackingArmy.enroll(attackingSoldier1);
         attackingArmy.enroll(attackingSoldier2);
 
-        Army defendingArmy = new Army();
+        when(defendingHQ.reportEnlistment(NAME_JOHN_DOE)).thenReturn(1);
+        when(defendingHQ.reportEnlistment(NAME_RON_DOE)).thenReturn(2);
+        Army defendingArmy = new Army(defendingHQ);
         Soldier defendingSoldier1 = new Soldier(NAME_JOHN_DOE, AXE);
         Soldier defendingSoldier2 = new Soldier(NAME_RON_DOE, BARE_FIST);
         defendingArmy.enroll(defendingSoldier1);
@@ -33,17 +43,25 @@ class WarTest {
         assertThat(attackingArmy.getSoldiers()).containsExactly(attackingSoldier2);
         assertThat(defendingArmy.getFrontMan()).isEmpty();
         assertThat(defendingArmy.getSoldiers()).isEmpty();
+        verify(attackingHQ).reportCasualty(1);
+        verify(defendingHQ).reportCasualty(1);
+        verify(defendingHQ).reportCasualty(2);
+        verify(attackingHQ).reportVictory(1);
     }
 
     @Test
     void givenDefenderIsStronger_getWinningArmy_expectDefenderWins() {
-        Army attackingArmy = new Army();
+        when(attackingHQ.reportEnlistment(NAME_JOHN_DOE)).thenReturn(1);
+        when(attackingHQ.reportEnlistment(NAME_RON_DOE)).thenReturn(2);
+        Army attackingArmy = new Army(attackingHQ);
         Soldier attackingSoldier1 = new Soldier(NAME_JOHN_DOE, SWORD);
         Soldier attackingSoldier2 = new Soldier(NAME_RON_DOE, BARE_FIST);
         attackingArmy.enroll(attackingSoldier1);
         attackingArmy.enroll(attackingSoldier2);
 
-        Army defendingArmy = new Army();
+        when(defendingHQ.reportEnlistment(NAME_JOHN_DOE)).thenReturn(1);
+        when(defendingHQ.reportEnlistment(NAME_RON_DOE)).thenReturn(2);
+        Army defendingArmy = new Army(defendingHQ);
         Soldier defendingSoldier1 = new Soldier(NAME_JOHN_DOE, AXE);
         Soldier defendingSoldier2 = new Soldier(NAME_RON_DOE, BARE_FIST);
         defendingArmy.enroll(defendingSoldier1);
@@ -58,15 +76,20 @@ class WarTest {
         assertThat(attackingArmy.getSoldiers()).isEmpty();
         assertThat(defendingArmy.getFrontMan()).hasValue(defendingSoldier1);
         assertThat(defendingArmy.getSoldiers()).containsExactly(defendingSoldier1, defendingSoldier2);
+        verify(attackingHQ).reportCasualty(1);
+        verify(attackingHQ).reportCasualty(2);
+        verify(defendingHQ).reportVictory(2);
     }
 
     @Test
     void givenArmyWithEqualStrenght_getWinningArmy_expectAttacker() {
-        Army attackingArmy = new Army();
+        when(attackingHQ.reportEnlistment(NAME_JOHN_DOE)).thenReturn(1);
+        Army attackingArmy = new Army(attackingHQ);
         Soldier attackingSoldier1 = new Soldier(NAME_JOHN_DOE, SWORD);
         attackingArmy.enroll(attackingSoldier1);
 
-        Army defendingArmy = new Army();
+        when(defendingHQ.reportEnlistment(NAME_JOHN_DOE)).thenReturn(1);
+        Army defendingArmy = new Army(defendingHQ);
         Soldier defendingSoldier1 = new Soldier(NAME_JOHN_DOE, SWORD);
         defendingArmy.enroll(defendingSoldier1);
 
@@ -75,13 +98,16 @@ class WarTest {
         Army winningArmy = war.getWinningArmy();
 
         assertThat(winningArmy).isEqualTo(attackingArmy);
+        verify(defendingHQ).reportCasualty(1);
+        verify(attackingHQ).reportVictory(1);
     }
 
     @Test
     void construction_whenAttackingArmyIsEmpty_expectException() {
-        Army attackingArmy = new Army();
+        Army attackingArmy = new Army(attackingHQ);
 
-        Army defendingArmy = new Army();
+        when(defendingHQ.reportEnlistment(NAME_JOHN_DOE)).thenReturn(1);
+        Army defendingArmy = new Army(defendingHQ);
         Soldier defendingSoldier = new Soldier(NAME_JOHN_DOE, AXE);
         defendingArmy.enroll(defendingSoldier);
 
@@ -92,11 +118,12 @@ class WarTest {
 
     @Test
     void construction_whenDefendingArmyIsEmpty_expectException() {
-        Army attackingArmy = new Army();
+        when(attackingHQ.reportEnlistment(NAME_JOHN_DOE)).thenReturn(1);
+        Army attackingArmy = new Army(attackingHQ);
         Soldier attackingSoldier = new Soldier(NAME_JOHN_DOE, SWORD);
         attackingArmy.enroll(attackingSoldier);
 
-        Army defendingArmy = new Army();
+        Army defendingArmy = new Army(defendingHQ);
 
         assertThatThrownBy(() -> new War(attackingArmy, defendingArmy))
                 .isInstanceOf(IllegalArgumentException.class)
@@ -105,8 +132,8 @@ class WarTest {
 
     @Test
     void construction_whenAttackingAndDefendingArmyAreEmpty_expectException() {
-        Army attackingArmy = new Army();
-        Army defendingArmy = new Army();
+        Army attackingArmy = new Army(attackingHQ);
+        Army defendingArmy = new Army(defendingHQ);
 
         assertThatThrownBy(() -> new War(attackingArmy, defendingArmy))
                 .isInstanceOf(IllegalArgumentException.class)
