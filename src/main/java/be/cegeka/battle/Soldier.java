@@ -29,6 +29,10 @@ public class Soldier {
         return weapon;
     }
 
+    public Soldier attack(Soldier defender) {
+        return weapon.getWeaponStrength() >= defender.getWeapon().getWeaponStrength() ? this : defender;
+    }
+
     private static void checkIfNameIsValid(String name) {
         if (name == null || name.isBlank()) {
             throw new IllegalArgumentException("A soldier must have a name");
