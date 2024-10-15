@@ -1,6 +1,7 @@
 package be.cegeka.battle;
 
 
+import be.cegeka.battle.fight.Fight;
 import be.cegeka.battle.weapon.Weapon;
 
 import static be.cegeka.battle.weapon.Weapon.BARE_FIST;
@@ -30,7 +31,7 @@ public class Soldier {
     }
 
     public Soldier attack(Soldier defender) {
-        return weapon.getWeaponStrength() >= defender.getWeapon().getWeaponStrength() ? this : defender;
+        return new Fight(this, defender).getWinner();
     }
 
     private static void checkIfNameIsValid(String name) {
