@@ -1,6 +1,4 @@
-package be.cegeka.battle.fight;
-
-import be.cegeka.battle.Soldier;
+package be.cegeka.battle;
 
 public class Fight {
     private final Soldier attacker;

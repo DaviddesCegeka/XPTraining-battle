@@ -1,10 +1,7 @@
 package be.cegeka.battle;
 
 
-import be.cegeka.battle.fight.Fight;
-import be.cegeka.battle.weapon.Weapon;
-
-import static be.cegeka.battle.weapon.Weapon.BARE_FIST;
+import static be.cegeka.battle.Weapon.BARE_FIST;
 
 public class Soldier {
 

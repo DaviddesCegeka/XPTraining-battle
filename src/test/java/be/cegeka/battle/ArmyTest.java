@@ -4,8 +4,8 @@ import org.junit.jupiter.api.Test;
 
 import static be.cegeka.battle.TestConstants.NAME_JOHN_DOE;
 import static be.cegeka.battle.TestConstants.NAME_RON_DOE;
-import static be.cegeka.battle.weapon.Weapon.AXE;
-import static be.cegeka.battle.weapon.Weapon.SWORD;
+import static be.cegeka.battle.Weapon.AXE;
+import static be.cegeka.battle.Weapon.SWORD;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class ArmyTest {

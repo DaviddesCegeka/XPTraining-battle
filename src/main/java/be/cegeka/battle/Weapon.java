@@ -1,4 +1,4 @@
-package be.cegeka.battle.weapon;
+package be.cegeka.battle;
 
 public enum Weapon {
     BARE_FIST(1),

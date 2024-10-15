@@ -1,11 +1,10 @@
-package be.cegeka.battle.fight;
+package be.cegeka.battle;
 
-import be.cegeka.battle.Soldier;
 import org.junit.jupiter.api.Test;
 
 import static be.cegeka.battle.TestConstants.NAME_JOHN_DOE;
 import static be.cegeka.battle.TestConstants.NAME_RON_DOE;
-import static be.cegeka.battle.weapon.Weapon.*;
+import static be.cegeka.battle.Weapon.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class FightTest {
