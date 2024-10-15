@@ -83,4 +83,21 @@ class ArmyTest {
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("The army has no frontman to be removed");
     }
+
+    @Test
+    void givenArmyWithOneSoldiers_whenIsEmptyIsCalled_expectFalse() {
+        Army army = new Army();
+        Soldier soldier1 = new Soldier(NAME_JOHN_DOE, SWORD);
+
+        army.enroll(soldier1);
+
+        assertThat(army.isEmpty()).isFalse();
+    }
+
+    @Test
+    void givenArmyWithoutSoldiers_whenIsEmptyIsCalled_expectTrue() {
+        Army army = new Army();
+
+        assertThat(army.isEmpty()).isTrue();
+    }
 }

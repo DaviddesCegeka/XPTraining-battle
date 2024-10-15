@@ -37,6 +37,10 @@ public class Army {
         return soldiers;
     }
 
+    public boolean isEmpty() {
+        return soldiers.isEmpty();
+    }
+
     public Optional<Soldier> getFrontMan() {
         return ofNullable(frontMan);
     }
